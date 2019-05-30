@@ -13,13 +13,30 @@ plugins {
 }
 repositories {
 	mavenCentral()
+	if (findProperty("repositoryUrl")) {
+		maven {
+			url findProperty("repositoryUrl")
+		}
+	} else {
+		jcenter()
+		mavenCentral()
+		maven {
+			url "https://repository.apache.org/snapshots"
+		}
+		maven {
+			url "https://oss.sonatype.org/content/repositories/snapshots"
+		}
+		maven {
+			url "https://oss.jfrog.org/jfrog-dependencies"
+		}
+	}
 }
 sourceCompatibility = 11
 targetCompatibility = 11
 ext {
 	buildLibsPath = "build${File.separator}libs"
 	connectorSrcDir = "${project.buildDir}${File.separator}flink-connectors"
-	connectorCommit = "043274b"
+	connectorJarDir = "${connectorSrcDir}${File.separator}${buildLibsPath}"
 }
 wrapper {
 	gradleVersion = "4.10.3"
@@ -63,4 +80,13 @@ dependencies {
 	compileOnly(
 		"org.projectlombok:lombok:1.18.6",
 	)
+	compile(
+		"org.apache.flink:flink-streaming-java_${flinkScalaVersion}:${flinkVersion}",
+		fileTree(dir: connectorJarDir, include: "*.jar"),
+	)
+	compile(group: 'io.pravega', name: 'pravega-client', version: pravegaVersion) {
+		exclude group:  'org.slf4j', module: 'slf4j-api'
+		exclude group: 'org.projectlombok', module: 'lombok'
+		exclude group: 'org.apache.curator', module: 'curator-recipes'
+	}
 }
