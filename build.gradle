@@ -31,8 +31,8 @@ repositories {
 		}
 	}
 }
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 8
+targetCompatibility = 8
 ext {
 	buildLibsPath = "build${File.separator}libs"
 	connectorSrcDir = "${project.buildDir}${File.separator}flink-connectors"
@@ -68,7 +68,7 @@ task cloneConnectorRepo {
 }
 task connectorJar(type: Exec, dependsOn: cloneConnectorRepo) {
 	workingDir connectorSrcDir
-	commandLine "./gradlew", "jar"
+	commandLine "./gradlew", "-PpravegaVersion=${pravegaVersion}", "jar"
 }
 compileJava.dependsOn += connectorJar
 configurations.all {
@@ -89,4 +89,20 @@ dependencies {
 		exclude group: 'org.projectlombok', module: 'lombok'
 		exclude group: 'org.apache.curator', module: 'curator-recipes'
 	}
+}
+jar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	manifest {
+		attributes(
+			"Implementation-Title": project.name,
+			"Implementation-Version": project.version,
+			"Main-Class": "io.pravega.flink.benchmark.MessageRateAccountingJob",
+		)
+	}
+	from configurations
+		.runtime
+		.copyRecursive()
+		.collect {
+			zipTree(it)
+		}
 }
