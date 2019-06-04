@@ -15,7 +15,7 @@ Pravega Flink Connector Benchmark
 
 # Deploy
 
-## Prerquisites
+## Prerequisites
 
 1. Pravega cluster (not standalone) is deployed. Note the Pravega version for the compatibility.
 2. Flink cluster/standalone is deployed.
@@ -35,6 +35,9 @@ Pravega Flink Connector Benchmark
 # Jobs
 
 * `io.pravega.flink.benchmark.MessageRateAccountingJob`
+
+    Accounts the specified event stream consuming rate (evt/s), reports the rate every 1 sec.
+
     Parameters (w/ default values):
     * `--scope="scope0"`
     * `--stream="stream0"`
