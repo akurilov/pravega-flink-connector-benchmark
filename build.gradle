@@ -69,7 +69,7 @@ task cloneConnectorRepo {
 }
 task connectorJar(type: Exec, dependsOn: cloneConnectorRepo) {
 	workingDir connectorSrcDir
-	commandLine "./gradlew", "-PpravegaVersion=0.6.0-2269.e7bc55a-SNAPSHOT", "jar"
+	commandLine "./gradlew", "-PpravegaVersion=${pravegaVersion}", "jar"
 }
 compileJava.dependsOn += connectorJar
 configurations.all {

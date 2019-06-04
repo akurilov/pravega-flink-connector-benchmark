@@ -6,7 +6,6 @@ import io.pravega.client.netty.impl.ConnectionFactoryImpl
 import io.pravega.client.stream.{Stream, StreamConfiguration}
 import io.pravega.client.stream.impl.{ControllerImpl, ControllerImplConfig}
 import io.pravega.connectors.flink.{FlinkPravegaReader, PravegaConfig}
-import io.pravega.connectors.flink.serialization.PravegaSerialization
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.Time
@@ -16,8 +15,8 @@ object MessageRateAccountingJob {
 
 	private val JOB_NAME = "MessageRateAccountingJob"
 	private val LOG = LoggerFactory getLogger JOB_NAME
-	private val DEFAULT_SCOPE = "scope0"
-	private val DEFAULT_STREAM = "stream0"
+	private val DEFAULT_SCOPE = "scope1"
+	private val DEFAULT_STREAM = "stream2"
 	private val STREAM_PARAM = "stream"
 
 	@throws[Exception]
@@ -49,25 +48,20 @@ object MessageRateAccountingJob {
 			}
 		}
 		val env = StreamExecutionEnvironment.getExecutionEnvironment
-		LOG info "5"
 		// create the Pravega source to read a stream of text
 		val source = FlinkPravegaReader
 			.builder[Array[Byte]]
 			.withPravegaConfig(pravegaConfig)
-			.withDeserializationSchema(PravegaSerialization.deserializationFor(classOf[Array[Byte]]))
+			.withDeserializationSchema(new RawBytesDeserializationSchema)
 			.forStream(Stream.of(DEFAULT_SCOPE, DEFAULT_STREAM))
 			.build
-		LOG info "6"
 		// count each word over a 1 second time period
 		val dataStream = env
 			.addSource(source)
 			.map((x: Array[Byte]) => 1L)
 			.timeWindowAll(Time.seconds(1))
 			.reduce(java.lang.Long.sum)
-		LOG info "7"
 		dataStream.print
-		LOG info "8"
 		env execute JOB_NAME
-		LOG info "9"
 	}
 }
