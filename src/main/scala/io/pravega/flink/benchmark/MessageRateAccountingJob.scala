@@ -28,7 +28,7 @@ object MessageRateAccountingJob {
 
 	@throws[Exception]
 	def main(args: Array[String]) {
-		LOG info("Starting the " + JOB_NAME + " ...")
+		LOG info("Starting the " + JOB_NAME + " with args: " + (args mkString ", "))
 		// initialize the parameter utility tool in order to retrieve input parameters
 		val params = ParameterTool fromArgs args
 		val scope = params.get(SCOPE_PARAM, DEFAULT_SCOPE)
