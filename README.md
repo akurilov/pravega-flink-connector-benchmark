@@ -4,13 +4,15 @@ Pravega Flink Connector Benchmark
 # Build
 
 ```bash
+./gradlew connectorJar
 ./gradlew jar
 ```
 
 ## Build With Specific Pravega Version
 
 ```bash
-./gradlew -PpravegaVersion=0.6.0-50.ed9d955-SNAPSHOT clean jar
+./gradlew -PpravegaVersion=0.6.0-50.ed9d955-SNAPSHOT clean connectorJar
+./gradlew -PpravegaVersion=0.6.0-50.ed9d955-SNAPSHOT jar
 ```
 
 # Deploy
@@ -42,4 +44,4 @@ Pravega Flink Connector Benchmark
     * `--scope="scope0"`
     * `--stream="stream0"`
     * `--controllerUri="tcp://127.0.0.1:9090"`
-    * `--readTimeoutMillis`
+    * `--storage-driver-event-timeoutMillis="100"`
