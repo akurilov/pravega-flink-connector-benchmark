@@ -41,7 +41,7 @@ Pravega Flink Connector Benchmark
     Accounts the specified event stream consuming rate (evt/s), reports the rate every 1 sec.
 
     Parameters (w/ default values):
-    * `--scope="scope0"`
-    * `--stream="stream0"`
-    * `--controllerUri="tcp://127.0.0.1:9090"`
-    * `--storage-driver-event-timeoutMillis="100"`
+    * `--scope scope0`
+    * `--stream stream0`
+    * `--controllerUri tcp://127.0.0.1:9090`
+    * `--storage-driver-event-timeoutMillis 100`

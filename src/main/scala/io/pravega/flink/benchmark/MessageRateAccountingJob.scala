@@ -49,14 +49,23 @@ object MessageRateAccountingJob {
 		try {
 			controller
 				.createScope(scope)
-				.get(10, TimeUnit.SECONDS)
+				.get(100, TimeUnit.SECONDS)
+		} catch {
+			case e: Throwable => LOG.warn("Scope creating failure: " + e)
+		}
+		try {
 			val streamConfig = StreamConfiguration.builder.build
 			controller
 				.createStream(scope, stream, streamConfig)
-				.get(10, TimeUnit.SECONDS)
-		} finally {
-			if (controller != null) {
+				.get(100, TimeUnit.SECONDS)
+		} catch {
+			case e: Throwable => LOG.warn("Stream creating failure: " + e)
+		}
+		if (controller != null) {
+			try {
 				controller.close()
+			} catch {
+				case e: Throwable => LOG.warn("Controller closing failure: " + e)
 			}
 		}
 		val env = StreamExecutionEnvironment.getExecutionEnvironment
