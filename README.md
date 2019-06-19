@@ -45,3 +45,8 @@ Pravega Flink Connector Benchmark
     * `--stream stream0`
     * `--controllerUri tcp://127.0.0.1:9090`
     * `--storage-driver-event-timeoutMillis 100`
+
+# Open Issues
+
+1. How to scale? Change Flink parallelism/count of Pravega streams/etc?
+2. How to measure? 
