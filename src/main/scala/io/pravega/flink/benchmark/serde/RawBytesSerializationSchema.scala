@@ -1,4 +1,4 @@
-package io.pravega.flink.benchmark
+package io.pravega.flink.benchmark.serde
 
 import org.apache.flink.api.common.serialization.SerializationSchema
 

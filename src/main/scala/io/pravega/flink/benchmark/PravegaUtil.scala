@@ -10,14 +10,7 @@ import io.pravega.connectors.flink.PravegaConfig
 import org.slf4j.LoggerFactory
 
 object PravegaUtil {
-	
-	val SCOPE_PARAM = "scope"
-	val DEFAULT_SCOPE = "scope0"
-	val STREAM_PARAM = "stream"
-	val DEFAULT_STREAM = "stream0"
-	val CONTROLLER_PARAM = "controller"
-	val DEFAULT_CONTROLLER = "tcp://127.0.0.1:9090"
-	
+
 	private val LOG = LoggerFactory getLogger PravegaUtil.getClass.getSimpleName
 	
 	def config(scope: String, controllerUri: URI): PravegaConfig =

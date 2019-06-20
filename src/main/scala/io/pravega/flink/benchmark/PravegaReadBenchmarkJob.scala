@@ -4,12 +4,13 @@ import java.net.URI
 
 import io.pravega.client.stream.Stream
 import io.pravega.connectors.flink.FlinkPravegaReader
-import io.pravega.flink.benchmark.PravegaUtil._
+import io.pravega.flink.benchmark.Constants._
 import org.apache.flink.api.common.time.Time
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
 import org.apache.flink.streaming.api.windowing.time.{Time => WindowingTime}
 import org.slf4j.LoggerFactory
+import serde.RawBytesDeserializationSchema
 
 object PravegaReadBenchmarkJob {
 
@@ -36,7 +37,7 @@ object PravegaReadBenchmarkJob {
 			.builder[Array[Byte]]
 			.withPravegaConfig(pravegaConfig)
 			.withDeserializationSchema(new RawBytesDeserializationSchema)
-    		.withEventReadTimeout(readTimeoutMillis)
+			.withEventReadTimeout(readTimeoutMillis)
 			.forStream(Stream of(scope, stream))
 			.build
 		// count each message over a 1 second time period
