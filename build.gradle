@@ -10,6 +10,7 @@ plugins {
 	id "java"
 	id "scala"
 	id "org.ajoberstar.grgit" version "3.1.1"
+	id "com.bmuschko.docker-remote-api" version "4.0.5"
 }
 repositories {
 	mavenCentral()
@@ -33,6 +34,7 @@ repositories {
 }
 sourceCompatibility = 8
 targetCompatibility = 8
+version = "1.0.0"
 ext {
 	buildLibsPath = "build${File.separator}libs"
 	connectorSrcDir = "${project.buildDir}${File.separator}flink-connectors"
@@ -90,7 +92,7 @@ jar {
 		attributes(
 			"Implementation-Title": project.name,
 			"Implementation-Version": project.version,
-			"Main-Class": "io.pravega.flink.benchmark.MessageRateAccountingJob",
+			"Main-Class": "io.pravega.flink.benchmark.PravegaWriteBenchmarkJob",
 		)
 	}
 	from configurations
@@ -99,4 +101,28 @@ jar {
 		.collect {
 			zipTree(it)
 		}
+}
+// Docker tasks ////////////////////////////////////////////////////////////////////////////////////////////////////////
+import com.bmuschko.gradle.docker.tasks.image.*
+import com.bmuschko.gradle.docker.tasks.container.*
+task dockerBuildImage(type: DockerBuildImage) {
+	inputDir = project.projectDir
+	buildArgs = [
+			"FLINK_VERSION": flinkVersion,
+			"VERSION": project.version,
+	]
+	dockerFile = project.file("ci${File.separator}docker${File.separator}Dockerfile")
+	imageId = "akurilov/${project.name}".toString()
+	tags = [
+			"akurilov/${project.name}:${version}",
+			"akurilov/${project.name}:testing",
+	]
+}
+task dockerPushProductionImage(type: DockerPushImage) {
+	imageName = "akurilov/${project.name}".toString()
+	tag = "akurilov/${project.name}:${version}".toString()
+}
+task dockerPushTestingImage(type: DockerPushImage, dependsOn: dockerBuildImage) {
+	imageName = "akurilov/${project.name}".toString()
+	tag = "akurilov/${project.name}:testing".toString()
 }

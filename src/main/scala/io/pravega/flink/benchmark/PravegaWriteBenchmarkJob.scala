@@ -38,10 +38,11 @@ object PravegaWriteBenchmarkJob {
 		val dataStream = env addSource source
 		val sink = FlinkPravegaWriter
 			.builder[Array[Byte]]
+  		.forStream(scope + "/" + stream)
 			.withPravegaConfig(pravegaConfig)
   		.withEventRouter(new ConstantEventRouter(JOB_NAME))
   		.withSerializationSchema(new RawBytesSerializationSchema)
-			.withWriterMode(PravegaWriterMode.EXACTLY_ONCE)
+			.withWriterMode(PravegaWriterMode.ATLEAST_ONCE)
 			.build()
 		dataStream addSink sink
 		env execute JOB_NAME

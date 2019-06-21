@@ -15,36 +15,51 @@ Pravega Flink Connector Benchmark
 ./gradlew -PpravegaVersion=0.6.0-50.ed9d955-SNAPSHOT jar
 ```
 
+## Build Docker Image
+
+```bash
+./gradlew clean dockerBuildImage
+```
+
 # Deploy
 
 ## Prerequisites
 
 1. Pravega cluster (not standalone) is deployed. Note the Pravega version for the compatibility.
-2. Flink cluster/standalone is deployed.
 
 ## Steps
 
-1. Open Flink UI in the browser. Use the Flink's *master node* address and the port # 8081.
-2. Go to the *Submit new Job* tab in the left menu.
-3. Press the *Add New +* button.
-4. Select the built jar in the open file dialog.
-5. Upload the jar.
-6. Specify the entry class for the selected job, the desired parallelism and arguments.
-7. Press the *Submit* button.
-
-![](Screenshot_20190604_162856.png)
+1.
+```bash
+docker run --network host -d akurilov/pravega-flink-connector-benchmark:1.0.0
+```
 
 # Jobs
 
-* `io.pravega.flink.benchmark.MessageRateAccountingJob`
+Common configuration parameters (w/ default values):
+* `--scope scope0`
+* `--stream stream0`
+* `--controllerUri tcp://127.0.0.1:9090`
 
-    Accounts the specified event stream consuming rate (evt/s), reports the rate every 1 sec.
+## Write
+    
+Job FQCN: `io.pravega.flink.benchmark.PravegaWriteBenchmarkJob`
 
-    Parameters (w/ default values):
-    * `--scope scope0`
-    * `--stream stream0`
-    * `--controllerUri tcp://127.0.0.1:9090`
-    * `--storage-driver-event-timeoutMillis 100`
+This job us running by default. Generates the events payload of the specified size with the specified rate and 
+performs writes to Pravega via the Flink connector.
+
+Specific parameters (w/ default values):
+* `--evtPayloadSize 1`
+* `--rateLimit 1`
+
+## Read 
+
+Job FQCN: `io.pravega.flink.benchmark.PravegaReadBenchmarkJob`
+
+Accounts the specified event stream consuming rate (evt/s), reports the rate every 1 sec.
+
+Specific parameters (w/ default values):
+* `--readTimeoutMillis 100`
 
 # Open Issues
 
