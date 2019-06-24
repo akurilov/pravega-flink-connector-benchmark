@@ -8,7 +8,9 @@ import io.pravega.flink.benchmark.Constants._
 import org.apache.flink.api.common.time.Time
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
-import org.apache.flink.streaming.api.windowing.time.{Time => WindowingTime}
+import org.apache.flink.streaming.api.windowing.time.{
+	Time => WindowingTime
+}
 import org.slf4j.LoggerFactory
 import serde.RawBytesDeserializationSchema
 

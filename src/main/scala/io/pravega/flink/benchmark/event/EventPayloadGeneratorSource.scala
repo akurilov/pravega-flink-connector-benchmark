@@ -2,7 +2,10 @@ package io.pravega.flink.benchmark.event
 
 import java.util.concurrent.locks.LockSupport
 
-import org.apache.flink.streaming.api.functions.source.{RichParallelSourceFunction, SourceFunction}
+import org.apache.flink.streaming.api.functions.source.{
+	RichParallelSourceFunction,
+	SourceFunction
+}
 
 class EventPayloadGeneratorSource(size: Int, rate: Double)
 extends RichParallelSourceFunction[Array[Byte]] {

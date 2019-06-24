@@ -5,7 +5,10 @@ import java.util.concurrent.TimeUnit
 
 import io.pravega.client.netty.impl.ConnectionFactoryImpl
 import io.pravega.client.stream.StreamConfiguration
-import io.pravega.client.stream.impl.{ControllerImpl, ControllerImplConfig}
+import io.pravega.client.stream.impl.{
+	ControllerImpl,
+	ControllerImplConfig
+}
 import io.pravega.connectors.flink.PravegaConfig
 import org.slf4j.LoggerFactory
 

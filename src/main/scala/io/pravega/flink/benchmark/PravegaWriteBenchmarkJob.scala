@@ -4,9 +4,15 @@ import java.net.URI
 
 import org.apache.flink.api.java.utils.ParameterTool
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment
-import io.pravega.connectors.flink.{FlinkPravegaWriter, PravegaWriterMode}
+import io.pravega.connectors.flink.{
+	FlinkPravegaWriter,
+	PravegaWriterMode
+}
 import io.pravega.flink.benchmark.Constants._
-import io.pravega.flink.benchmark.event.{ConstantEventRouter, EventPayloadGeneratorSource}
+import io.pravega.flink.benchmark.event.{
+	ConstantEventRouter,
+	EventPayloadGeneratorSource
+}
 import org.slf4j.LoggerFactory
 import serde.RawBytesSerializationSchema
 
